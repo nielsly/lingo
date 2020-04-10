@@ -41,7 +41,7 @@ async function lingo(size = 5) {
 }
 
 async function generateWord(size) {
-    const keys = Object.keys(JSON.parse(await fetch('../words/' + size + '.json')));
+    const keys = Object.keys(await fetch('../words/' + size + '.json'));
     return keys[Math.random() * keys.length | 0].replace(/\s/g, '').toUpperCase();
 }
 
