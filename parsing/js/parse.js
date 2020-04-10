@@ -11,7 +11,7 @@ async function parse(size) {
     const params = {'jsonString':jsonString, 'fileName': size}
     const form = document.createElement('form');
     form.method = 'POST';
-    form.action = '../php/parse.php';
+    form.action = 'php/parse.php';
   
     for (const key in params) {
         if (params.hasOwnProperty(key)) {
