@@ -1,9 +1,48 @@
+function settings() {
+    const container = document.getElementById('lingo');
+    container.innerHTML = '';
+
+    const radioGroup = document.createElement('span');
+
+    for (let i = 5; i < 10; i++) {
+        const radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.name = 'size';
+        radio.value = i;
+        radioGroup.append(radio);
+
+        const label = document.createElement('label');
+        label.for = i;
+        label.innerHTML = i + ' letterwoorden';
+        radioGroup.append(label);
+
+        radioGroup.append(document.createElement('br'));
+    }
+
+    radioGroup.children[0].checked = true;
+
+    container.append(radioGroup);
+
+    const submit = document.createElement('button');
+    submit.type = 'button';
+    submit.innerHTML = "Start Lingo!"
+
+    submit.onclick = function () {
+        const size = document.querySelector('input[name="size"]:checked').value;
+        lingo(size);
+    }
+
+    container.append(submit);
+}
+
 async function lingo(size = 5) {
     //setup
     const lingo = document.getElementById('lingo');
+    lingo.innerHTML = '';
     const rows = 5;
     
-    wordString = await generateWord(size);
+    words = await fetch('../words/' + size + '.json').then(res => res.json());
+    wordString = Object.keys(words)[Math.random() * words.length | 0].replace(/\s/g, '').toUpperCase();
 
     const input = document.createElement('input');
     input.type = 'text';
@@ -27,9 +66,9 @@ async function lingo(size = 5) {
 
             if (known === undefined) {
                 nextQuestion(true);
-            } else if (row < rows - 2) {
+            } else if (row < rows - 1) {
                 //TODO: change for 2 teams
-                await nextRow(table, known, row + 1, rows);
+                await nextRow(table, known, row + 1);
             } else {
                 table.children[0].hidden = true;
                 table.children[rows-1].hidden = false;
@@ -38,11 +77,6 @@ async function lingo(size = 5) {
             }
         }
     };
-}
-
-async function generateWord(size) {
-    const keys = Object.keys(await fetch('../words/' + size + '.json').then(res => res.json()));
-    return keys[Math.random() * keys.length | 0].replace(/\s/g, '').toUpperCase();
 }
 
 function createTable(rows, size) {
@@ -59,12 +93,13 @@ function createTable(rows, size) {
 
         table.append(row)
     }
+    
     table.children[rows].hidden = true;
     table.children[rows + 1].hidden = true;
     return table;
 }
 
-async function nextRow(table, known, row, rows) {
+async function nextRow(table, known, row) {
     const cells = table.children[row].children;
     for (let i = 0; i < cells.length; i++) {
         const cell = cells[i];
@@ -133,10 +168,9 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function nextQuestion(correct) {
+async function nextQuestion(size = 5, correct = false) {
     await sleep(1000);
-    document.getElementById('lingo').innerHTML = '';
-    lingo();
+    lingo(size);
 }
 
 function combineIJ(word) {
@@ -150,5 +184,5 @@ function combineIJ(word) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    lingo();
+    settings();
 });
