@@ -57,11 +57,16 @@ function createTable(rows, size) {
 
 async function generateWord(size) {
     //open file of words of desired size and split into array by newlines
-    const words = (await fetch('words/' + size + '.txt').then(x => x.text())).split('\n');
+    
     
     //return random word as char array
     return words[Math.random() * words.length | 0].toUpperCase().split('');
 }
+
+var randomProperty = function (obj) {
+    var keys = Object.keys(obj);
+    return obj[keys[Math.random() * keys.length | 0]];
+};
 
 async function nextRow(table, known, row, rows) {
     const cells = table.children[row].children;

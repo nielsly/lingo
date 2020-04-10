@@ -9,6 +9,7 @@ body {
 
 #container {
     display: inline-block;
+    text-align: center;
 }
 #lingo table {
     transition: 0.2s linear;
@@ -19,7 +20,6 @@ body {
     height: 6vh;
     border: 0.1vh white solid;
     border-radius: 0.5vh;
-    text-align: center;
     vertical-align: middle;
     font-size: 5vh;
     font-family: sans-serif;
