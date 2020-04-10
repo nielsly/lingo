@@ -1,5 +1,5 @@
 async function parse(size) {
-    const wordsArray = (await fetch('../words/' + size + '.txt').then(x => x.text())).split('\n');
+    const wordsArray = (await fetch('/words/' + size + '.txt').then(x => x.text())).split('\n');
     const wordsObject = {}
 
     for (let i = 0; i < wordsArray.length; i++) {
@@ -11,7 +11,7 @@ async function parse(size) {
     const params = {'jsonString':jsonString, 'fileName': size}
     const form = document.createElement('form');
     form.method = 'POST';
-    form.action = 'php/parse.php';
+    form.action = '/parsing/php/parse.php';
   
     for (const key in params) {
         if (params.hasOwnProperty(key)) {
