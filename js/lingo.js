@@ -3,7 +3,9 @@ let words,
     size,
     checkDictionary,
     suggestionsForm,
-    latestSuggestion;
+    latestSuggestion,
+    correctWords,
+    incorrectWords;
 
 function settings() {
     const container = document.getElementById('lingo');
@@ -95,7 +97,8 @@ async function lingo() {
             known = await guessWord(table, word, known, row, guess);
 
             if (known === undefined) {
-                nextQuestion(true);
+                correctWords.innerHTML = parseInt(correctWords.innerHTML) + 1;
+                nextQuestion();
             } else if (row < rows - 1) {
                 //TODO: change for 2 teams
                 await nextRow(table, known, row + 1);
@@ -103,7 +106,8 @@ async function lingo() {
                 table.children[0].hidden = true;
                 table.children[rows].hidden = false;
                 await guessWord(table, word, known, row + 1, word);
-                nextQuestion(false);
+                incorrectWords.innerHTML = parseInt(incorrectWords.innerHTML) + 1;
+                nextQuestion();
             }
         }
     };
@@ -233,6 +237,8 @@ function suggestions() {
     suggestionsForm.append(submit);
 
     document.getElementById('container').insertBefore(suggestionsForm, document.getElementsByTagName('footer')[0]);
+
+    score();
 }
 
 function addSuggestion(word) {
@@ -243,6 +249,26 @@ function addSuggestion(word) {
     suggestionsForm.append(suggestion);
 
     latestSuggestion.innerHTML = 'Suggestion added:' + word;
+}
+
+function score() {
+    const scores = document.createElement('p');
+    
+    scores.append('Correctly guessed words: ');
+
+    correctWords = document.createElement('span');
+    correctWords.innerHTML = 0;
+    scores.append(correctWords);
+
+    scores.append(document.createElement('br'));
+
+    scores.append('Incorrectly guessed words: ');
+
+    incorrectWords = document.createElement('span');
+    incorrectWords.innerHTML = 0;
+    scores.append(incorrectWords);
+
+    document.getElementById('container').insertBefore(scores, suggestionsForm);
 }
 
 document.addEventListener('DOMContentLoaded', function() {
