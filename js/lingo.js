@@ -28,8 +28,7 @@ function settings() {
     submit.innerHTML = "Start Lingo!"
 
     submit.onclick = function () {
-        const size = document.querySelector('input[name="size"]:checked').value;
-        lingo(size);
+        lingo(parseInt(document.querySelector('input[name="size"]:checked').value));
     }
 
     container.append(submit);
@@ -41,8 +40,10 @@ async function lingo(size = 5) {
     lingo.innerHTML = '';
     const rows = 5;
     
-    words = await fetch('../words/' + size + '.json').then(res => res.json());
-    wordString = Object.keys(words)[Math.random() * words.length | 0].replace(/\s/g, '');
+    const words = await fetch('../words/' + size + '.json').then(res => res.json());
+    let keys = Object.keys(words);
+    const wordString = keys[Math.random() * keys.length | 0].replace(/\s/g, '');
+    keys = '';
 
     const input = document.createElement('input');
     input.type = 'text';
@@ -58,7 +59,7 @@ async function lingo(size = 5) {
     nextRow(table, known, row + 1);
     
     input.onchange = async function() {
-        const guessString = this.value.replace(/\s/g, '').toUpperCase();
+        const guessString = input.value.replace(/\s/g, '').toUpperCase();
         const guess = combineIJ(guessString.split(''));
         if (guess.length === size && row < rows) {
             row++;
@@ -71,7 +72,7 @@ async function lingo(size = 5) {
                 await nextRow(table, known, row + 1);
             } else {
                 table.children[0].hidden = true;
-                table.children[rows-1].hidden = false;
+                table.children[rows].hidden = false;
                 await guessWord(table, word, known, row + 1, word);
                 nextQuestion(size, false);
             }

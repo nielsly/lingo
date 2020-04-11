@@ -3,7 +3,7 @@ async function parse(size) {
     const wordsObject = {};
 
     for (let i = 0; i < wordsArray.length; i++) {
-        const word = wordArray[i].toUpperCase();
+        const word = wordsArray[i].toUpperCase();
         wordsObject[word] = word;
     }
 
