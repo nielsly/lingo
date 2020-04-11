@@ -134,6 +134,7 @@ overnemen
 overzicht
 plavuizen
 poollicht
+predikant
 prefereer
 prestatie
 presteren
@@ -199,6 +200,7 @@ uitblazen
 uitbreken
 uitdaging
 uiteraard
+uitermate
 uitgangen
 uitkering
 uitkienen

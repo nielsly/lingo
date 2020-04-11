@@ -153,6 +153,7 @@ genre
 getal
 geven
 gewei
+gewis
 glans
 graaf
 graag

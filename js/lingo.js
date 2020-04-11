@@ -1,3 +1,10 @@
+let words,
+    keys,
+    size,
+    checkDictionary,
+    suggestionsForm,
+    latestSuggestion;
+
 function settings() {
     const container = document.getElementById('lingo');
     container.innerHTML = '';
@@ -19,10 +26,10 @@ function settings() {
 
     container.children[0].checked = true;
 
-    const checkDictionary = document.createElement('input');
-    checkDictionary.type = 'checkbox';
-    checkDictionary.id = 'checkDictionary';
-    container.append(checkDictionary);
+    const checkBox = document.createElement('input');
+    checkBox.type = 'checkbox';
+    checkBox.id = 'checkDictionary';
+    container.append(checkBox);
 
     const checkLabel = document.createElement('label');
     checkLabel.for = 'checkDictionary';
@@ -35,33 +42,34 @@ function settings() {
     submit.type = 'button';
     submit.innerHTML = "Start Lingo!"
 
-    submit.onclick = function () {
-        lingo(parseInt(document.querySelector('input[name="size"]:checked').value), checkDictionary.checked);
+    submit.onclick = async function () {
+        size = parseInt(document.querySelector('input[name="size"]:checked').value);
+        words = await fetch('../words/' + size + '.json').then(res => res.json());
+        keys = Object.keys(words);
+        checkDictionary = checkBox.checked;
+
+        lingo();
+        suggestions(size);
     }
 
     container.append(submit);
 }
 
-async function lingo(size = 5, checkDictionary = false) {
+async function lingo() {
     //setup
     const lingo = document.getElementById('lingo');
     lingo.innerHTML = '';
     const rows = 5;
-    
-    const words = await fetch('../words/' + size + '.json').then(res => res.json());
-    let keys = Object.keys(words);
-    const wordString = keys[Math.random() * keys.length | 0].replace(/\s/g, '');
-    keys = '';
-
     const input = document.createElement('input');
     input.type = 'text';
     lingo.append(input);
 
-    const table = createTable(rows, size);
+    const table = createTable(rows);
     lingo.append(table);
     let row = -1;
 
     //get word as char array
+    const wordString = keys[Math.random() * keys.length | 0];
     const word = combineIJ(wordString.split(''));
     let known = [word[0]];
     nextRow(table, known, row + 1);
@@ -73,15 +81,21 @@ async function lingo(size = 5, checkDictionary = false) {
         let check;
         if (checkDictionary) {
             check = (guessString in words);
+            if (!check && (guess.length === size)) {
+                addSuggestion(guessString);
+            }
         } else {
             check = (guess.length === size);
+            if (check && !(guessString in words)) {
+                addSuggestion(guessString);
+            }
         }
         if (row < rows && check) {
             row++;
             known = await guessWord(table, word, known, row, guess);
 
             if (known === undefined) {
-                nextQuestion(size, checkDictionary, true);
+                nextQuestion(true);
             } else if (row < rows - 1) {
                 //TODO: change for 2 teams
                 await nextRow(table, known, row + 1);
@@ -89,13 +103,13 @@ async function lingo(size = 5, checkDictionary = false) {
                 table.children[0].hidden = true;
                 table.children[rows].hidden = false;
                 await guessWord(table, word, known, row + 1, word);
-                nextQuestion(size, checkDictionary, false);
+                nextQuestion(false);
             }
         }
     };
 }
 
-function createTable(rows, size) {
+function createTable(rows) {
     const table = document.createElement('table');
 
     for (let r = 0; r < rows + 2; r++) {
@@ -184,9 +198,9 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function nextQuestion(size = 5, checkDictionary = false, correct = false) {
+async function nextQuestion(correct = false) {
     await sleep(1000);
-    lingo(size, checkDictionary);
+    lingo();
 }
 
 function combineIJ(word) {
@@ -197,6 +211,38 @@ function combineIJ(word) {
         }
     }
     return word;
+}
+
+function suggestions() {
+    suggestionsForm = document.createElement('form');
+    suggestionsForm.method = 'post';
+    suggestionsForm.action = 'php/suggestions.php';
+
+    latestSuggestion = document.createElement('p');
+    suggestionsForm.append(latestSuggestion);
+
+    const sizeField = document.createElement('input');
+    sizeField.type = 'hidden';
+    sizeField.name = 'size';
+    sizeField.value = size;
+    suggestionsForm.append(sizeField);
+
+    const submit = document.createElement('input');
+    submit.type = 'submit';
+    submit.value = "Submit suggestions";
+    suggestionsForm.append(submit);
+
+    document.getElementById('container').insertBefore(suggestionsForm, document.getElementsByTagName('footer')[0]);
+}
+
+function addSuggestion(word) {
+    const suggestion = document.createElement('input');
+    suggestion.type = 'hidden';
+    suggestion.name = 'suggestion';
+    suggestion.value = word;
+    suggestionsForm.append(suggestion);
+
+    latestSuggestion.innerHTML = 'Suggestion added:' + word;
 }
 
 document.addEventListener('DOMContentLoaded', function() {
