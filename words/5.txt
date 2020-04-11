@@ -387,6 +387,7 @@ shows
 sites
 sjaal
 skier
+slaan
 sluis
 smaak
 smeed

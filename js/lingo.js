@@ -2,39 +2,47 @@ function settings() {
     const container = document.getElementById('lingo');
     container.innerHTML = '';
 
-    const radioGroup = document.createElement('span');
-
     for (let i = 5; i < 10; i++) {
         const radio = document.createElement('input');
         radio.type = 'radio';
         radio.name = 'size';
         radio.value = i;
-        radioGroup.append(radio);
+        container.append(radio);
 
         const label = document.createElement('label');
         label.for = i;
         label.innerHTML = i + ' letterwoorden';
-        radioGroup.append(label);
+        container.append(label);
 
-        radioGroup.append(document.createElement('br'));
+        container.append(document.createElement('br'));
     }
 
-    radioGroup.children[0].checked = true;
+    container.children[0].checked = true;
 
-    container.append(radioGroup);
+    const checkDictionary = document.createElement('input');
+    checkDictionary.type = 'checkbox';
+    checkDictionary.id = 'checkDictionary';
+    container.append(checkDictionary);
+
+    const checkLabel = document.createElement('label');
+    checkLabel.for = 'checkDictionary';
+    checkLabel.innerHTML = 'Check if words are in dictionary';
+    container.append(checkLabel);
+
+    container.append(document.createElement('br'));
 
     const submit = document.createElement('button');
     submit.type = 'button';
     submit.innerHTML = "Start Lingo!"
 
     submit.onclick = function () {
-        lingo(parseInt(document.querySelector('input[name="size"]:checked').value));
+        lingo(parseInt(document.querySelector('input[name="size"]:checked').value), checkDictionary.checked);
     }
 
     container.append(submit);
 }
 
-async function lingo(size = 5) {
+async function lingo(size = 5, checkDictionary = false) {
     //setup
     const lingo = document.getElementById('lingo');
     lingo.innerHTML = '';
@@ -61,12 +69,19 @@ async function lingo(size = 5) {
     input.onchange = async function() {
         const guessString = input.value.replace(/\s/g, '').toUpperCase();
         const guess = combineIJ(guessString.split(''));
-        if (guess.length === size && row < rows) {
+
+        let check;
+        if (checkDictionary) {
+            check = (guessString in words);
+        } else {
+            check = (guess.length === size);
+        }
+        if (row < rows && check) {
             row++;
             known = await guessWord(table, word, known, row, guess);
 
             if (known === undefined) {
-                nextQuestion(size, true);
+                nextQuestion(size, checkDictionary, true);
             } else if (row < rows - 1) {
                 //TODO: change for 2 teams
                 await nextRow(table, known, row + 1);
@@ -74,7 +89,7 @@ async function lingo(size = 5) {
                 table.children[0].hidden = true;
                 table.children[rows].hidden = false;
                 await guessWord(table, word, known, row + 1, word);
-                nextQuestion(size, false);
+                nextQuestion(size, checkDictionary, false);
             }
         }
     };
@@ -169,9 +184,9 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function nextQuestion(size = 5, correct = false) {
+async function nextQuestion(size = 5, checkDictionary = false, correct = false) {
     await sleep(1000);
-    lingo(size);
+    lingo(size, checkDictionary);
 }
 
 function combineIJ(word) {
