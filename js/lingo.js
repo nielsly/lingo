@@ -6,7 +6,8 @@ let words,
     latestSuggestion,
     correctWords,
     incorrectWords,
-    rows;
+    rows,
+    suggestionsList;
 
 function settings() {
     const container = document.getElementById('lingo');
@@ -97,7 +98,7 @@ async function lingo() {
         }
         if (row < rows && check) {
             row++;
-            
+
             known = await guessWord(table, word, known, row, guess);
 
             if (known === undefined) {
@@ -233,6 +234,29 @@ function suggestions() {
     latestSuggestion = document.createElement('p');
     suggestionsForm.append(latestSuggestion);
 
+    const show = document.createElement('a');
+    show.href = '#';
+    show.hidden = true;
+    show.innerHTML = '&#923; Show words not in dictionary';
+
+    show.onclick = function() {
+        if(suggestionsList.hidden) {
+            show.innerHTML = 'V Don\'t show words not in dictionary';
+            suggestionsList.hidden = false;
+        } else {
+            show.innerHTML = '&#923; Show words not in dictionary';
+            suggestionsList.hidden = true;
+        }
+    }
+
+    suggestionsForm.append(show);
+
+    suggestionsForm.append(document.createElement('br'));
+
+    suggestionsList = document.createElement('ol');
+    suggestionsList.hidden = true;
+    suggestionsForm.append(suggestionsList);
+
     const sizeField = document.createElement('input');
     sizeField.type = 'hidden';
     sizeField.name = 'size';
@@ -250,13 +274,43 @@ function suggestions() {
 }
 
 function addSuggestion(word) {
-    const suggestion = document.createElement('input');
-    suggestion.type = 'hidden';
-    suggestion.name = 'suggestion[]';
-    suggestion.value = word;
-    suggestionsForm.append(suggestion);
+    suggestionsForm.children[1].hidden = false;
 
-    latestSuggestion.innerHTML = 'Suggestion added:' + word;
+    const item = document.createElement('li');
+
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'suggestion[]';
+    input.value = word;
+    item.append(input);
+
+    const span = document.createElement('span');
+    span.innerHTML = word + ' ';
+
+    const x = document.createElement('a');
+    x.href = '#';
+    x.innerHTML = 'x';
+    x.style.color = 'red';
+
+    x.onclick = function() {
+        if(latestSuggestion.innerHTML === 'Latest suggestion: ' + word) {
+            if (suggestionsList.children.length === 1) {
+                latestSuggestion.innerHTML = '';
+                suggestionsList.previousSibling.previousSibling.hidden = true;
+            } else {
+                latestSuggestion.innerHTML = 'Latest suggestion: ' + this.parentElement.parentElement.previousSibling.children[0].value;
+            }
+        }
+
+        this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement);
+    }
+
+    span.append(x);
+    item.append(span);
+
+    suggestionsList.append(item);
+
+    latestSuggestion.innerHTML = 'Latest suggestion: ' + word;
 }
 
 function score() {
