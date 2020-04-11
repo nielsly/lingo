@@ -2,6 +2,7 @@ aanwezige
 aardappel
 achterbak
 achteruit
+achtiende
 afgedankt
 aflossing
 afrikaans
@@ -37,6 +38,9 @@ clubleden
 combineer
 committee
 computing
+dertiende
+dertigers
+dertigste
 diepspoel
 discussie
 draadloos
@@ -86,6 +90,7 @@ jokkebrok
 jongedame
 jongleren
 jonkvrouw
+kakelende
 kandelaar
 keramisch
 klapstoel
@@ -104,6 +109,7 @@ microfoon
 motivatie
 nationaal
 navigatie
+negentien
 nieuwbouw
 noorwegen
 nostalgie
@@ -167,6 +173,8 @@ schatkist
 schemeren
 schrobben
 scripting
+sijpelende
+slimmerik
 snelwegen
 snowboard
 speelgoed
@@ -176,12 +184,15 @@ stadsbrug
 standvast
 statutair
 stelletje
+stinkende
 stoplicht
 strategie
 streepjes
 structuur
 studenten
 supporter
+tachtiger
+takelende
 talgklier
 technisch
 tekenfilm
@@ -193,6 +204,7 @@ toevoegen
 trajecten
 transport
 tuinieren
+twintiger
 uberhaupt
 uilenbril
 uitademen
@@ -223,6 +235,7 @@ uitvoerig
 uitvreten
 uitzetten
 universum
+veertiger
 verachten
 verhuizen
 verkenner
@@ -235,6 +248,9 @@ verschoon
 verspreid
 versturen
 veulentje
+vijftiende
+vijftigers
+vijftigste
 vlakspoel
 vliegtuig
 vliegveld
@@ -250,3 +266,8 @@ webwinkel
 weekeinde
 wereldbol
 woonkamer
+zestiende
+zestigers
+zestigste
+zeventien
+zwemmende

@@ -19,6 +19,7 @@ aziaat
 babbel
 bakken
 bakker
+balies
 balken
 ballon
 banaan
@@ -50,6 +51,8 @@ bieden
 bieren
 binnen
 bladen
+blaken
+blanke
 bleken
 blijven
 blouse
@@ -104,6 +107,7 @@ dadels
 daders
 dansen
 danser
+danste
 dassen
 dating
 degens
@@ -112,6 +116,7 @@ delict
 dender
 denken
 derden
+dertig
 design
 deugde
 deuren
@@ -260,6 +265,7 @@ iemand
 immers
 impuls
 indien
+indier
 ingang
 ingave
 inkoop
@@ -311,6 +317,7 @@ kamers
 kammen
 kampen
 kanaal
+kanker
 kapper
 kapsel
 karten
@@ -432,6 +439,7 @@ namens
 natuur
 neefje
 neuken
+neuzen
 nieren
 nieten
 nieuws
@@ -538,6 +546,7 @@ rokjes
 rokken
 rollen
 ronden
+rondes
 rooien
 rotsen
 ruiken
@@ -576,11 +585,15 @@ shovel
 showen
 sieren
 sigaar
+sikjes
 sirene
+sissen
+sisten
 skieen
 slagen
 slager
 slapen
+slaven
 sleeen
 slipje
 slopen
@@ -769,12 +782,14 @@ xyleen
 yuppie
 zachte
 zanger
+zeelui
 zeilen
 zelden
 zelfde
 zenden
 zender
 zessen
+zestig
 zeuren
 zieken
 ziekte
