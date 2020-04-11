@@ -238,7 +238,7 @@ function suggestions() {
 function addSuggestion(word) {
     const suggestion = document.createElement('input');
     suggestion.type = 'hidden';
-    suggestion.name = 'suggestion';
+    suggestion.name = 'suggestion[]';
     suggestion.value = word;
     suggestionsForm.append(suggestion);
 
