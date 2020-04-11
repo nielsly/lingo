@@ -5,7 +5,8 @@ let words,
     suggestionsForm,
     latestSuggestion,
     correctWords,
-    incorrectWords;
+    incorrectWords,
+    rows;
 
 function settings() {
     const container = document.getElementById('lingo');
@@ -49,6 +50,7 @@ function settings() {
         words = await fetch('../words/' + size + '.json').then(res => res.json());
         keys = Object.keys(words);
         checkDictionary = checkBox.checked;
+        rows = 5;
 
         lingo();
         suggestions(size);
@@ -61,9 +63,9 @@ async function lingo() {
     //setup
     const lingo = document.getElementById('lingo');
     lingo.innerHTML = '';
-    const rows = 5;
     const input = document.createElement('input');
     input.type = 'text';
+    input.autofocus = true;
     lingo.append(input);
 
     const table = createTable(rows);
@@ -78,6 +80,7 @@ async function lingo() {
     
     input.onchange = async function() {
         const guessString = input.value.replace(/\s/g, '').toUpperCase();
+        input.value = '';
         const guess = combineIJ(guessString.split(''));
 
         let check;
@@ -94,6 +97,7 @@ async function lingo() {
         }
         if (row < rows && check) {
             row++;
+            
             known = await guessWord(table, word, known, row, guess);
 
             if (known === undefined) {
@@ -104,8 +108,10 @@ async function lingo() {
                 await nextRow(table, known, row + 1);
             } else {
                 table.children[0].hidden = true;
-                table.children[rows].hidden = false;
+                table.append(createRow());
+
                 await guessWord(table, word, known, row + 1, word);
+
                 incorrectWords.innerHTML = parseInt(incorrectWords.innerHTML) + 1;
                 nextQuestion();
             }
@@ -116,21 +122,23 @@ async function lingo() {
 function createTable(rows) {
     const table = document.createElement('table');
 
-    for (let r = 0; r < rows + 2; r++) {
-        const row = document.createElement('tr');
-
-        for (let c = 0; c < size; c++) {
-            cell = document.createElement('td');
-            cell.append(document.createElement('td'));
-            row.append(cell);
-        }
-
-        table.append(row)
+    for (let r = 0; r < rows; r++) {
+        table.append(createRow());
     }
-    
-    table.children[rows].hidden = true;
-    table.children[rows + 1].hidden = true;
+
     return table;
+}
+
+function createRow() {
+    const row = document.createElement('tr');
+
+    for (let c = 0; c < size; c++) {
+        cell = document.createElement('td');
+        cell.append(document.createElement('td'));
+        row.append(cell);
+    }
+
+    return row;
 }
 
 async function nextRow(table, known, row) {
