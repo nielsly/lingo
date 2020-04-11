@@ -42,7 +42,7 @@ async function lingo(size = 5) {
     const rows = 5;
     
     words = await fetch('../words/' + size + '.json').then(res => res.json());
-    wordString = Object.keys(words)[Math.random() * words.length | 0].replace(/\s/g, '').toUpperCase();
+    wordString = Object.keys(words)[Math.random() * words.length | 0].replace(/\s/g, '');
 
     const input = document.createElement('input');
     input.type = 'text';
@@ -54,18 +54,18 @@ async function lingo(size = 5) {
 
     //get word as char array
     const word = combineIJ(wordString.split(''));
-    let known = [word[0].toUpperCase()];
+    let known = [word[0]];
     nextRow(table, known, row + 1);
     
     input.onchange = async function() {
         const guessString = this.value.replace(/\s/g, '').toUpperCase();
         const guess = combineIJ(guessString.split(''));
-        if (guess.length === size && row < size) {
+        if (guess.length === size && row < rows) {
             row++;
             known = await guessWord(table, word, known, row, guess);
 
             if (known === undefined) {
-                nextQuestion(true);
+                nextQuestion(size, true);
             } else if (row < rows - 1) {
                 //TODO: change for 2 teams
                 await nextRow(table, known, row + 1);
@@ -73,7 +73,7 @@ async function lingo(size = 5) {
                 table.children[0].hidden = true;
                 table.children[rows-1].hidden = false;
                 await guessWord(table, word, known, row + 1, word);
-                nextQuestion(false);
+                nextQuestion(size, false);
             }
         }
     };

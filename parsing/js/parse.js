@@ -1,10 +1,10 @@
 async function parse(size) {
-    //const wordsArray = (await fetch('../../words/' + size + '.txt').then(x => x.text())).split('\n');
-    const wordsArray = ['words','secon','tests'];
+    const wordsArray = (await fetch('../../words/' + size + '.txt').then(x => x.text())).split('\n');
     const wordsObject = {};
 
     for (let i = 0; i < wordsArray.length; i++) {
-        wordsObject[wordsArray[i]] = wordsArray[i];
+        const word = wordArray[i].toUpperCase();
+        wordsObject[word] = word;
     }
 
     const jsonString = JSON.stringify(wordsObject);
