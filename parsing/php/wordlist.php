@@ -14,7 +14,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['wordlist'])){
     $a9 = array();
 
     foreach ($arr as $k => $str) {
-        $str = strtolower($str);
+        $str = strtoupper($str);
         $split = str_split($str);
         $len = strlen($str);
         $ij = 0;
