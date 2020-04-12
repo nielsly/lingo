@@ -2,10 +2,15 @@
 if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['wordlist'])){
     $data = file_get_contents('../../words/' . $_POST['wordlist'] . '.txt');
     $arr = array();
-    preg_match_all('/\b[A-z]{5,14}\b/', $data, $arr);
+    preg_match_all('/\b[A-Za-z\']{5,14}\b/', $data, $arr);
 
     $arr = array_unique($arr[0], SORT_REGULAR);
     sort($arr);
+
+    foreach ($arr as $k => $str) {
+        $str = str_replace('\'', '', $str);
+        $arr[$k] = $str;
+    }
 
     $a5 = array();
     $a6 = array();
