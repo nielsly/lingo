@@ -1,6 +1,6 @@
 <?php
 if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['wordlist'])){
-    $data = file_get_contents('../../words' . $_POST['wordlist'] . '.txt');
+    $data = file_get_contents('../../words/' . $_POST['wordlist'] . '.txt');
     $arr = array();
     preg_match_all('/\b[A-z]{5,14}\b/', $data, $arr);
 
@@ -19,7 +19,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['wordlist'])){
         $len = strlen($str);
         $ij = 0;
         for ($i = 1; $i < $len; $i++) { 
-            if($split[i-1] == i && $split[i] == j) {
+            if($split[$i-1] == I && $split[$i] == J) {
                 $ij++;
             }
         };
