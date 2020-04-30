@@ -1,13 +1,13 @@
-let words,
-    keys,
-    size,
-    checkDictionary,
-    suggestionsForm,
-    latestSuggestion,
-    correctWords,
-    incorrectWords,
-    rows,
-    suggestionsList;
+let words;
+let keys;
+let size;
+let checkDictionary;
+let suggestionsForm;
+let latestSuggestion;
+let correctWords;
+let incorrectWords;
+let rows;
+let suggestionsList;
 
 function settings() {
     const container = document.getElementById('lingo');
